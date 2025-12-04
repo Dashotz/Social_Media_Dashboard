@@ -20,6 +20,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("overview");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -73,37 +74,43 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-black flex">
       {/* Sidebar */}
-      <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
-
-      {/* Mobile Menu Button */}
-      <div className="lg:hidden fixed top-4 left-4 z-30">
-        <select
-          value={activeTab}
-          onChange={(e) => setActiveTab(e.target.value)}
-          className="bg-gray-900 border border-gray-800 text-gray-100 px-4 py-2 rounded-lg"
-        >
-          {[
-            { id: "overview", label: "Overview" },
-            { id: "analytics", label: "Analytics" },
-            { id: "posts", label: "Posts" },
-            { id: "schedule", label: "Schedule" },
-            { id: "performance", label: "Performance" },
-            { id: "insights", label: "Insights" },
-          ].map((tab) => (
-            <option key={tab.id} value={tab.id}>
-              {tab.label}
-            </option>
-          ))}
-        </select>
-      </div>
+      <Sidebar
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
 
       {/* Main Content */}
-      <div className="flex-1 lg:ml-64 max-w-full overflow-x-hidden">
+      <div className="flex-1 lg:ml-64">
         {/* Header */}
         <header className="bg-black border-b border-gray-800 shadow-lg shadow-silver/5 sticky top-0 z-10">
-          <div className="px-4 lg:px-6 py-4">
-            <h1 className="text-xl lg:text-2xl font-bold text-gray-100">Social Media Dashboard</h1>
-            <p className="mt-1 text-xs lg:text-sm text-gray-400">Manage your social media accounts and analytics</p>
+          <div className="px-4 lg:px-6 py-4 flex items-center gap-4">
+            {/* Burger Button */}
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="lg:hidden text-gray-400 hover:text-gray-200 transition-colors p-2"
+              aria-label="Toggle sidebar"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+
+            <div>
+              <h1 className="text-xl lg:text-2xl font-bold text-gray-100">Social Media Dashboard</h1>
+              <p className="mt-1 text-xs lg:text-sm text-gray-400">Manage your social media accounts and analytics</p>
+            </div>
           </div>
         </header>
 
