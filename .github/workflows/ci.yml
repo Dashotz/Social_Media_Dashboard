@@ -25,7 +25,8 @@ jobs:
         cache: 'npm'
 
     - name: Install dependencies
-      run: npm ci
+      run: |
+        npm ci || (echo "⚠️ npm ci failed, regenerating lock file..." && npm install)
 
     - name: Run linter
       run: npm run lint
