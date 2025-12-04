@@ -96,49 +96,74 @@ export default function AnalyticsCharts({ stats }: AnalyticsChartsProps) {
     plugins: {
       legend: {
         position: "top" as const,
+        labels: {
+          color: "#c0c0c0",
+        },
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: "#9ca3af",
+        },
+        grid: {
+          color: "rgba(156, 163, 175, 0.1)",
+        },
+      },
+      y: {
+        ticks: {
+          color: "#9ca3af",
+        },
+        grid: {
+          color: "rgba(156, 163, 175, 0.1)",
+        },
       },
     },
   };
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900">Analytics</h2>
+      <h2 className="text-2xl font-bold text-gray-100">Analytics</h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Followers Growth Chart */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Followers Growth</h3>
-          <div className="h-64">
-            <Line data={followersData} options={chartOptions} />
-          </div>
+      {/* Followers Growth Chart - Full Width */}
+      <div className="bg-gray-900 border border-gray-800 rounded-lg shadow-lg p-6">
+        <h3 className="text-lg font-semibold text-gray-100 mb-4">Followers Growth</h3>
+        <div className="h-64">
+          <Line data={followersData} options={chartOptions} />
         </div>
+      </div>
 
+      {/* Engagement Comparison and Platform Distribution - Column Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Engagement Comparison */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Engagement Comparison</h3>
+        <div className="bg-gray-900 border border-gray-800 rounded-lg shadow-lg p-6">
+          <h3 className="text-lg font-semibold text-gray-100 mb-4">Engagement Comparison</h3>
           <div className="h-64">
             <Bar data={engagementData} options={chartOptions} />
           </div>
         </div>
-      </div>
 
-      {/* Platform Distribution */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">Platform Distribution</h3>
-        <div className="h-64 flex items-center justify-center">
-          <div className="w-64 h-64">
-            <Doughnut
-              data={distributionData}
-              options={{
-                ...chartOptions,
-                plugins: {
-                  ...chartOptions.plugins,
-                  legend: {
-                    position: "bottom" as const,
+        {/* Platform Distribution */}
+        <div className="bg-gray-900 border border-gray-800 rounded-lg shadow-lg p-6">
+          <h3 className="text-lg font-semibold text-gray-100 mb-4">Platform Distribution</h3>
+          <div className="h-64 flex items-center justify-center">
+            <div className="w-64 h-64">
+              <Doughnut
+                data={distributionData}
+                options={{
+                  ...chartOptions,
+                  plugins: {
+                    ...chartOptions.plugins,
+                    legend: {
+                      position: "bottom" as const,
+                      labels: {
+                        color: "#c0c0c0",
+                      },
+                    },
                   },
-                },
-              }}
-            />
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>

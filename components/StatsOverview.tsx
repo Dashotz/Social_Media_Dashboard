@@ -25,9 +25,9 @@ export default function StatsOverview({ stats, loading }: StatsOverviewProps) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="bg-white rounded-lg shadow p-6 animate-pulse">
-            <div className="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
-            <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+          <div key={i} className="bg-gray-900 border border-gray-800 rounded-lg shadow-lg p-6 animate-pulse">
+            <div className="h-4 bg-gray-700 rounded w-1/2 mb-4"></div>
+            <div className="h-8 bg-gray-700 rounded w-3/4"></div>
           </div>
         ))}
       </div>
@@ -39,10 +39,10 @@ export default function StatsOverview({ stats, loading }: StatsOverviewProps) {
       {stats.map((stat) => (
         <div
           key={stat.platform}
-          className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
+          className="bg-gray-900 border border-gray-800 rounded-lg shadow-lg p-6 hover:border-silver/50 hover:shadow-silver/10 transition-all"
         >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-800">
+            <h3 className="text-lg font-semibold text-gray-100">
               {platformNames[stat.platform]}
             </h3>
             <div className={`w-3 h-3 rounded-full ${platformColors[stat.platform]}`}></div>
@@ -50,31 +50,31 @@ export default function StatsOverview({ stats, loading }: StatsOverviewProps) {
 
           <div className="space-y-3">
             <div>
-              <p className="text-sm text-gray-500">Followers</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-sm text-gray-400">Followers</p>
+              <p className="text-2xl font-bold text-gray-100">
                 {stat.followers.toLocaleString()}
               </p>
-              <p className="text-xs text-green-600 mt-1">
+              <p className="text-xs text-green-400 mt-1">
                 +{stat.growth}% growth
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 pt-3 border-t">
+            <div className="grid grid-cols-2 gap-4 pt-3 border-t border-gray-800">
               <div>
-                <p className="text-xs text-gray-500">Engagement</p>
-                <p className="text-lg font-semibold text-gray-900">
+                <p className="text-xs text-gray-400">Engagement</p>
+                <p className="text-lg font-semibold text-gray-100">
                   {stat.engagement.toLocaleString()}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-gray-500">Reach</p>
-                <p className="text-lg font-semibold text-gray-900">
+                <p className="text-xs text-gray-400">Reach</p>
+                <p className="text-lg font-semibold text-gray-100">
                   {stat.reach.toLocaleString()}
                 </p>
               </div>
             </div>
 
-            <div className="pt-2 text-xs text-gray-400">
+            <div className="pt-2 text-xs text-gray-500">
               Updated: {format(new Date(stat.timestamp), "MMM d, HH:mm")}
             </div>
           </div>

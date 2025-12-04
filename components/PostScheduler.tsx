@@ -65,19 +65,19 @@ export default function PostScheduler({ onSchedule }: PostSchedulerProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-xl font-bold text-gray-900 mb-4">Schedule Post</h2>
+    <div className="bg-gray-900 border border-gray-800 rounded-lg shadow-lg p-6">
+      <h2 className="text-xl font-bold text-gray-100 mb-4">Schedule Post</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Platform Selection */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-300 mb-2">
             Platform
           </label>
           <select
             value={platform}
             onChange={(e) => setPlatform(e.target.value as "facebook" | "instagram" | "twitter")}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 text-gray-100 rounded-lg focus:ring-2 focus:ring-silver focus:border-silver transition-colors"
             required
           >
             <option value="facebook">Facebook</option>
@@ -88,7 +88,7 @@ export default function PostScheduler({ onSchedule }: PostSchedulerProps) {
 
         {/* Content */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-300 mb-2">
             Content
           </label>
           <textarea
@@ -96,16 +96,16 @@ export default function PostScheduler({ onSchedule }: PostSchedulerProps) {
             onChange={(e) => setContent(e.target.value)}
             rows={4}
             maxLength={2000}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 text-gray-100 rounded-lg focus:ring-2 focus:ring-silver focus:border-silver transition-colors placeholder-gray-500"
             placeholder="What's on your mind?"
             required
           />
-          <p className="text-xs text-gray-500 mt-1">{content.length}/2000 characters</p>
+          <p className="text-xs text-gray-400 mt-1">{content.length}/2000 characters</p>
         </div>
 
         {/* Scheduled Time */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-300 mb-2">
             Scheduled Time
           </label>
           <input
@@ -113,21 +113,21 @@ export default function PostScheduler({ onSchedule }: PostSchedulerProps) {
             value={scheduledTime || getDefaultScheduledTime()}
             onChange={(e) => setScheduledTime(e.target.value)}
             min={new Date().toISOString().slice(0, 16)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 text-gray-100 rounded-lg focus:ring-2 focus:ring-silver focus:border-silver transition-colors"
             required
           />
         </div>
 
         {/* Image URL (Optional) */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-300 mb-2">
             Image URL (Optional)
           </label>
           <input
             type="url"
             value={imageUrl}
             onChange={(e) => setImageUrl(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 text-gray-100 rounded-lg focus:ring-2 focus:ring-silver focus:border-silver transition-colors placeholder-gray-500"
             placeholder="https://example.com/image.jpg"
           />
         </div>
@@ -137,8 +137,8 @@ export default function PostScheduler({ onSchedule }: PostSchedulerProps) {
           <div
             className={`p-3 rounded-lg ${
               message.type === "success"
-                ? "bg-green-50 text-green-800 border border-green-200"
-                : "bg-red-50 text-red-800 border border-red-200"
+                ? "bg-green-900/30 text-green-400 border border-green-800/50"
+                : "bg-red-900/30 text-red-400 border border-red-800/50"
             }`}
           >
             {message.text}
@@ -149,7 +149,7 @@ export default function PostScheduler({ onSchedule }: PostSchedulerProps) {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="w-full bg-white text-black py-2 px-4 rounded-lg font-medium hover:bg-gray-200 border-2 border-silver focus:outline-none focus:ring-2 focus:ring-silver focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg shadow-silver/20"
         >
           {loading ? "Scheduling..." : "Schedule Post"}
         </button>
