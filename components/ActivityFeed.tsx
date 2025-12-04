@@ -2,16 +2,11 @@
 
 import { Post } from "@/lib/socialMediaAPI";
 import { formatDistanceToNow } from "date-fns";
+import { platformIcons } from "@/lib/constants";
 
 interface ActivityFeedProps {
   posts: Post[];
 }
-
-const platformIcons = {
-  facebook: "📘",
-  instagram: "📷",
-  twitter: "🐦",
-};
 
 const activityTypes = {
   like: "❤️",

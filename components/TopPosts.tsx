@@ -1,16 +1,11 @@
 "use client";
 
 import { Post } from "@/lib/socialMediaAPI";
+import { platformIcons } from "@/lib/constants";
 
 interface TopPostsProps {
   posts: Post[];
 }
-
-const platformIcons = {
-  facebook: "📘",
-  instagram: "📷",
-  twitter: "🐦",
-};
 
 export default function TopPosts({ posts }: TopPostsProps) {
   // Sort by total engagement (likes + comments + shares)

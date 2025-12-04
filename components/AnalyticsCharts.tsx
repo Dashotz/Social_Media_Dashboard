@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -77,7 +76,6 @@ export default function AnalyticsCharts({ stats }: AnalyticsChartsProps) {
   };
 
   // Platform distribution
-  const totalFollowers = stats.reduce((sum, s) => sum + s.followers, 0);
   const distributionData = {
     labels: stats.map((s) => s.platform.charAt(0).toUpperCase() + s.platform.slice(1)),
     datasets: [

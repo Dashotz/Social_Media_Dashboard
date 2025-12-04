@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { fetchRecentPosts } from "@/lib/socialMediaAPI";
 import { getClientIP, rateLimit, getSecurityHeaders } from "@/lib/security";
+import type { Platform } from "@/lib/constants";
+
+const VALID_PLATFORMS: Platform[] = ["facebook", "instagram", "twitter"];
 
 export async function GET(request: NextRequest) {
   try {
@@ -15,10 +18,10 @@ export async function GET(request: NextRequest) {
 
     // Get platform filter from query params
     const { searchParams } = new URL(request.url);
-    const platform = searchParams.get("platform") as "facebook" | "instagram" | "twitter" | null;
+    const platform = searchParams.get("platform") as Platform | null;
 
     // Validate platform if provided
-    if (platform && !["facebook", "instagram", "twitter"].includes(platform)) {
+    if (platform && !VALID_PLATFORMS.includes(platform)) {
       return NextResponse.json(
         { error: "Invalid platform" },
         { status: 400, headers: getSecurityHeaders() }

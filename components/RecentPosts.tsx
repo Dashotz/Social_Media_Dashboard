@@ -2,23 +2,12 @@
 
 import { Post } from "@/lib/socialMediaAPI";
 import { format, formatDistanceToNow } from "date-fns";
+import { platformIcons, platformBadgeColors } from "@/lib/constants";
 
 interface RecentPostsProps {
   posts: Post[];
   onRefresh: () => void;
 }
-
-const platformColors = {
-  facebook: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  instagram: "bg-pink-500/20 text-pink-400 border-pink-500/30",
-  twitter: "bg-sky-500/20 text-sky-400 border-sky-500/30",
-};
-
-const platformIcons = {
-  facebook: "📘",
-  instagram: "📷",
-  twitter: "🐦",
-};
 
 export default function RecentPosts({ posts, onRefresh }: RecentPostsProps) {
   return (
@@ -49,7 +38,7 @@ export default function RecentPosts({ posts, onRefresh }: RecentPostsProps) {
                 <div className="flex items-center gap-1.5 flex-wrap">
                   <span className="text-lg">{platformIcons[post.platform]}</span>
                   <span
-                    className={`px-2 py-0.5 rounded-full text-xs font-semibold border ${platformColors[post.platform]}`}
+                    className={`px-2 py-0.5 rounded-full text-xs font-semibold border ${platformBadgeColors[post.platform]}`}
                   >
                     {post.platform}
                   </span>

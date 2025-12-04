@@ -3,8 +3,10 @@
  * Handles fetching data from Facebook, Instagram, and Twitter APIs
  */
 
+import type { Platform } from "./constants";
+
 export interface SocialMediaStats {
-  platform: "facebook" | "instagram" | "twitter";
+  platform: Platform;
   followers: number;
   engagement: number;
   reach: number;
@@ -19,7 +21,7 @@ export interface SocialMediaStats {
 
 export interface Post {
   id: string;
-  platform: "facebook" | "instagram" | "twitter";
+  platform: Platform;
   content: string;
   imageUrl?: string;
   likes: number;
@@ -108,10 +110,10 @@ export async function fetchAllStats(): Promise<SocialMediaStats[]> {
   return [facebook, instagram, twitter];
 }
 
-export async function fetchRecentPosts(platform?: "facebook" | "instagram" | "twitter"): Promise<Post[]> {
+export async function fetchRecentPosts(platform?: Platform): Promise<Post[]> {
   await new Promise((resolve) => setTimeout(resolve, 300));
 
-  const platforms: ("facebook" | "instagram" | "twitter")[] = platform
+  const platforms: Platform[] = platform
     ? [platform]
     : ["facebook", "instagram", "twitter"];
 

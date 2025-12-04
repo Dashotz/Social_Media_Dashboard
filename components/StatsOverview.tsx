@@ -2,23 +2,12 @@
 
 import { SocialMediaStats } from "@/lib/socialMediaAPI";
 import { format } from "date-fns";
+import { platformColors, platformNames } from "@/lib/constants";
 
 interface StatsOverviewProps {
   stats: SocialMediaStats[];
   loading: boolean;
 }
-
-const platformColors = {
-  facebook: "bg-blue-500",
-  instagram: "bg-pink-500",
-  twitter: "bg-sky-500",
-};
-
-const platformNames = {
-  facebook: "Facebook",
-  instagram: "Instagram",
-  twitter: "Twitter",
-};
 
 export default function StatsOverview({ stats, loading }: StatsOverviewProps) {
   if (loading && stats.length === 0) {

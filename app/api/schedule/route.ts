@@ -3,7 +3,7 @@ import { z } from "zod";
 import { getClientIP, rateLimit, getSecurityHeaders, sanitizeInput } from "@/lib/security";
 
 const scheduleSchema = z.object({
-  platform: z.enum(["facebook", "instagram", "twitter"]),
+  platform: z.enum(["facebook", "instagram", "twitter"] as const),
   content: z.string().min(1).max(2000),
   scheduledTime: z.string().datetime(),
   imageUrl: z.string().url().optional(),

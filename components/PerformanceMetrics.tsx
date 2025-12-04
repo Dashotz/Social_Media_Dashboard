@@ -1,22 +1,11 @@
 "use client";
 
 import { SocialMediaStats } from "@/lib/socialMediaAPI";
+import { platformIcons, platformCardColors } from "@/lib/constants";
 
 interface PerformanceMetricsProps {
   stats: SocialMediaStats[];
 }
-
-const platformIcons = {
-  facebook: "📘",
-  instagram: "📷",
-  twitter: "🐦",
-};
-
-const platformColors = {
-  facebook: "border-blue-500/30 bg-blue-500/10",
-  instagram: "border-pink-500/30 bg-pink-500/10",
-  twitter: "border-sky-500/30 bg-sky-500/10",
-};
 
 export default function PerformanceMetrics({ stats }: PerformanceMetricsProps) {
   const metrics = stats.map((stat) => {
@@ -58,10 +47,10 @@ export default function PerformanceMetrics({ stats }: PerformanceMetricsProps) {
         {metrics.map((metric) => (
           <div
             key={metric.platform}
-            className={`border rounded-lg p-4 ${platformColors[metric.platform as keyof typeof platformColors]} hover:border-opacity-50 transition-all`}
+            className={`border rounded-lg p-4 ${platformCardColors[metric.platform]} hover:border-opacity-50 transition-all`}
           >
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-2xl">{platformIcons[metric.platform as keyof typeof platformIcons]}</span>
+              <span className="text-2xl">{platformIcons[metric.platform]}</span>
               <h4 className="text-base font-semibold text-gray-100 capitalize">{metric.platform}</h4>
             </div>
             <div className="grid grid-cols-2 gap-4">

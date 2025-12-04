@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { format } from "date-fns";
+import { platformIcons, platformBadgeColors, type Platform } from "@/lib/constants";
 
 interface PostSchedulerProps {
   onSchedule: () => void;
 }
 
 export default function PostScheduler({ onSchedule }: PostSchedulerProps) {
-  const [platform, setPlatform] = useState<"facebook" | "instagram" | "twitter">("facebook");
+  const [platform, setPlatform] = useState<Platform>("facebook");
   const [content, setContent] = useState("");
   const [scheduledTime, setScheduledTime] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -65,17 +66,6 @@ export default function PostScheduler({ onSchedule }: PostSchedulerProps) {
     return tomorrow.toISOString().slice(0, 16);
   };
 
-  const platformIcons = {
-    facebook: "📘",
-    instagram: "📷",
-    twitter: "🐦",
-  };
-
-  const platformColors = {
-    facebook: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-    instagram: "bg-pink-500/20 text-pink-400 border-pink-500/30",
-    twitter: "bg-sky-500/20 text-sky-400 border-sky-500/30",
-  };
 
   const quickTimePresets = [
     { label: "In 1 hour", hours: 1 },
@@ -131,7 +121,7 @@ export default function PostScheduler({ onSchedule }: PostSchedulerProps) {
           </label>
           <select
             value={platform}
-            onChange={(e) => setPlatform(e.target.value as "facebook" | "instagram" | "twitter")}
+            onChange={(e) => setPlatform(e.target.value as Platform)}
             className="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-gray-100 rounded-lg focus:ring-2 focus:ring-silver focus:border-silver transition-all hover:border-gray-600"
             required
           >
@@ -288,7 +278,7 @@ export default function PostScheduler({ onSchedule }: PostSchedulerProps) {
               <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-xl">{platformIcons[platform]}</span>
-                  <span className={`px-2 py-1 rounded-full text-xs font-semibold border ${platformColors[platform]}`}>
+                  <span className={`px-2 py-1 rounded-full text-xs font-semibold border ${platformBadgeColors[platform]}`}>
                     {platform}
                   </span>
                 </div>
