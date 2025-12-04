@@ -9,9 +9,9 @@ interface RecentPostsProps {
 }
 
 const platformColors = {
-  facebook: "bg-blue-100 text-blue-800",
-  instagram: "bg-pink-100 text-pink-800",
-  twitter: "bg-sky-100 text-sky-800",
+  facebook: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+  instagram: "bg-pink-500/20 text-pink-400 border-pink-500/30",
+  twitter: "bg-sky-500/20 text-sky-400 border-sky-500/30",
 };
 
 const platformIcons = {
@@ -23,65 +23,90 @@ const platformIcons = {
 export default function RecentPosts({ posts, onRefresh }: RecentPostsProps) {
   return (
     <div className="bg-gray-900 border border-gray-800 rounded-lg shadow-lg p-6">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-gray-100">Recent Posts</h2>
         <button
           onClick={onRefresh}
-          className="text-sm text-silver hover:text-gray-300 font-medium transition-colors"
+          className="text-sm text-silver hover:text-gray-200 font-medium transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-800"
         >
           Refresh
         </button>
       </div>
 
-      <div className="space-y-4 max-h-96 overflow-y-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-h-[600px] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {posts.length === 0 ? (
-          <p className="text-gray-400 text-center py-8">No posts available</p>
+          <div className="col-span-full">
+            <p className="text-gray-400 text-center py-12">No posts available</p>
+          </div>
         ) : (
           posts.slice(0, 10).map((post) => (
             <div
               key={post.id}
-              className="border border-gray-800 rounded-lg p-4 hover:border-silver/30 hover:shadow-silver/5 transition-all bg-gray-950/50"
+              className="border border-gray-800 rounded-lg p-4 hover:border-silver/40 hover:shadow-lg hover:shadow-silver/5 transition-all bg-gray-950/50 flex flex-col"
             >
-              <div className="flex items-start justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-xl">{platformIcons[post.platform]}</span>
+              {/* Header with platform and time */}
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-lg">{platformIcons[post.platform]}</span>
                   <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium ${platformColors[post.platform]}`}
+                    className={`px-2 py-0.5 rounded-full text-xs font-semibold border ${platformColors[post.platform]}`}
                   >
                     {post.platform}
                   </span>
-                  {post.scheduled && (
-                    <span className="px-2 py-1 rounded-full text-xs font-medium bg-yellow-900/50 text-yellow-400 border border-yellow-800/50">
-                      Scheduled
-                    </span>
-                  )}
                 </div>
-                <span className="text-xs text-gray-400">
-                  {formatDistanceToNow(new Date(post.timestamp), { addSuffix: true })}
-                </span>
               </div>
 
+              {/* Image - Square/Box format */}
               {post.imageUrl && (
-                <div className="mb-2 rounded-lg overflow-hidden border border-gray-800">
+                <div className="mb-3 rounded-lg overflow-hidden border border-gray-800/50 aspect-square">
                   <img
                     src={post.imageUrl}
                     alt="Post"
-                    className="w-full h-32 object-cover"
+                    className="w-full h-full object-cover"
                   />
                 </div>
               )}
 
-              <p className="text-sm text-gray-300 mb-3 line-clamp-2">{post.content}</p>
+              {/* Content */}
+              <p className="text-xs text-gray-300 mb-3 line-clamp-2 leading-relaxed flex-1">
+                {post.content}
+              </p>
 
-              <div className="flex items-center gap-4 text-xs text-gray-400">
-                <span>❤️ {post.likes}</span>
-                <span>💬 {post.comments}</span>
-                <span>🔄 {post.shares}</span>
+              {/* Engagement metrics */}
+              <div className="flex items-center gap-3 mb-2 flex-wrap">
+                <div className="flex items-center gap-1">
+                  <span className="text-sm">❤️</span>
+                  <span className="text-xs font-semibold text-gray-200">{post.likes.toLocaleString()}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="text-sm">💬</span>
+                  <span className="text-xs font-semibold text-gray-200">{post.comments.toLocaleString()}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="text-sm">🔄</span>
+                  <span className="text-xs font-semibold text-gray-200">{post.shares.toLocaleString()}</span>
+                </div>
               </div>
 
+              {/* Time and Scheduled badge */}
+              <div className="flex items-center justify-between pt-2 border-t border-gray-800">
+                <span className="text-xs text-gray-500">
+                  {formatDistanceToNow(new Date(post.timestamp), { addSuffix: true })}
+                </span>
+                {post.scheduled && (
+                  <span className="px-2 py-0.5 rounded text-xs font-semibold bg-yellow-900/40 text-yellow-300 border border-yellow-700/50">
+                    Scheduled
+                  </span>
+                )}
+              </div>
+
+              {/* Scheduled time */}
               {post.scheduledTime && (
-                <div className="mt-2 text-xs text-gray-500">
-                  Scheduled for: {format(new Date(post.scheduledTime), "MMM d, yyyy 'at' HH:mm")}
+                <div className="mt-2 pt-2 border-t border-gray-800">
+                  <p className="text-xs text-gray-500">
+                    <span className="text-gray-400">Scheduled:</span>{" "}
+                    {format(new Date(post.scheduledTime), "MMM d, HH:mm")}
+                  </p>
                 </div>
               )}
             </div>

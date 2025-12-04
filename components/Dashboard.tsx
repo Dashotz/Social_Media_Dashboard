@@ -5,6 +5,12 @@ import StatsOverview from "./StatsOverview";
 import AnalyticsCharts from "./AnalyticsCharts";
 import RecentPosts from "./RecentPosts";
 import PostScheduler from "./PostScheduler";
+import Sidebar from "./Sidebar";
+import QuickStats from "./QuickStats";
+import TopPosts from "./TopPosts";
+import ActivityFeed from "./ActivityFeed";
+import PerformanceMetrics from "./PerformanceMetrics";
+import Insights from "./Insights";
 import { SocialMediaStats, Post } from "@/lib/socialMediaAPI";
 
 export default function Dashboard() {
@@ -12,6 +18,7 @@ export default function Dashboard() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState("overview");
 
   const fetchData = async () => {
     try {
@@ -60,37 +67,107 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Header */}
-      <header className="bg-black border-b border-gray-800 shadow-lg shadow-silver/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <h1 className="text-3xl font-bold text-gray-100">Social Media Dashboard</h1>
-          <p className="mt-1 text-sm text-gray-400">Manage your social media accounts and analytics</p>
-        </div>
-      </header>
+    <div className="min-h-screen bg-black flex">
+      {/* Sidebar */}
+      <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
+
+      {/* Mobile Menu Button */}
+      <div className="lg:hidden fixed top-4 left-4 z-30">
+        <select
+          value={activeTab}
+          onChange={(e) => setActiveTab(e.target.value)}
+          className="bg-gray-900 border border-gray-800 text-gray-100 px-4 py-2 rounded-lg"
+        >
+          {[
+            { id: "overview", label: "Overview" },
+            { id: "analytics", label: "Analytics" },
+            { id: "posts", label: "Posts" },
+            { id: "schedule", label: "Schedule" },
+            { id: "performance", label: "Performance" },
+            { id: "insights", label: "Insights" },
+          ].map((tab) => (
+            <option key={tab.id} value={tab.id}>
+              {tab.label}
+            </option>
+          ))}
+        </select>
+      </div>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {error && (
-          <div className="mb-6 bg-red-900/20 border border-red-800/50 text-red-400 px-4 py-3 rounded-lg">
-            {error}
+      <div className="flex-1 lg:ml-64 max-w-full overflow-x-hidden">
+        {/* Header */}
+        <header className="bg-black border-b border-gray-800 shadow-lg shadow-silver/5 sticky top-0 z-10">
+          <div className="px-4 lg:px-6 py-4">
+            <h1 className="text-xl lg:text-2xl font-bold text-gray-100">Social Media Dashboard</h1>
+            <p className="mt-1 text-xs lg:text-sm text-gray-400">Manage your social media accounts and analytics</p>
           </div>
-        )}
+        </header>
 
-        {/* Stats Overview */}
-        <StatsOverview stats={stats} loading={loading} />
+        {/* Content Area */}
+        <main className="p-4 lg:p-6">
+          {error && (
+            <div className="mb-6 bg-red-900/20 border border-red-800/50 text-red-400 px-4 py-3 rounded-lg">
+              {error}
+            </div>
+          )}
 
-        {/* Analytics Charts */}
-        <div className="mt-8">
-          <AnalyticsCharts stats={stats} />
-        </div>
+          {/* Overview Tab */}
+          {activeTab === "overview" && (
+            <div className="space-y-6">
+              <QuickStats stats={stats} />
+              <StatsOverview stats={stats} loading={loading} />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <TopPosts posts={posts} />
+                <ActivityFeed posts={posts} />
+              </div>
+            </div>
+          )}
 
-        {/* Recent Posts and Scheduler */}
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <RecentPosts posts={posts} onRefresh={fetchData} />
-          <PostScheduler onSchedule={fetchData} />
-        </div>
-      </main>
+          {/* Analytics Tab */}
+          {activeTab === "analytics" && (
+            <div className="space-y-6">
+              <AnalyticsCharts stats={stats} />
+              <PerformanceMetrics stats={stats} />
+            </div>
+          )}
+
+          {/* Posts Tab */}
+          {activeTab === "posts" && (
+            <div className="space-y-6">
+              <RecentPosts posts={posts} onRefresh={fetchData} />
+            </div>
+          )}
+
+          {/* Schedule Tab */}
+          {activeTab === "schedule" && (
+            <div>
+              <PostScheduler onSchedule={fetchData} />
+            </div>
+          )}
+
+          {/* Performance Tab */}
+          {activeTab === "performance" && (
+            <div className="space-y-6">
+              <PerformanceMetrics stats={stats} />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <TopPosts posts={posts} />
+                <ActivityFeed posts={posts} />
+              </div>
+            </div>
+          )}
+
+          {/* Insights Tab */}
+          {activeTab === "insights" && (
+            <div className="space-y-6">
+              <Insights stats={stats} posts={posts} />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <TopPosts posts={posts} />
+                <ActivityFeed posts={posts} />
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
     </div>
   );
 }
