@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { format } from "date-fns";
 import { platformIcons, platformBadgeColors, type Platform } from "@/lib/constants";
+import { validatePostContent, validateScheduledTime, validateURL, sanitizeInput } from "@/lib/clientSecurity";
 
 interface PostSchedulerProps {
   onSchedule: () => void;
@@ -24,29 +25,39 @@ export default function PostScheduler({ onSchedule }: PostSchedulerProps) {
     setMessage(null);
 
     try {
-      // For GitHub Pages (static hosting), validate and store locally
-      if (!content.trim()) {
-        throw new Error("Content is required");
-      }
-      if (!scheduledTime) {
-        throw new Error("Scheduled time is required");
-      }
-      if (new Date(scheduledTime) < new Date()) {
-        throw new Error("Scheduled time must be in the future");
+      // Validate content
+      const contentValidation = validatePostContent(content, characterLimit[platform]);
+      if (!contentValidation.valid) {
+        throw new Error(contentValidation.error);
       }
 
-      // In a static site, we can't save to a server, so we'll simulate success
-      // In production, you'd want to use a backend service or database
+      // Validate scheduled time
+      const timeValidation = validateScheduledTime(scheduledTime || getDefaultScheduledTime());
+      if (!timeValidation.valid) {
+        throw new Error(timeValidation.error);
+      }
+
+      // Validate image URL if provided
+      if (imageUrl && !validateURL(imageUrl)) {
+        throw new Error("Invalid image URL format");
+      }
+
+      // Sanitize all inputs
+      const sanitizedContent = sanitizeInput(contentValidation.sanitized || content);
+      const sanitizedImageUrl = imageUrl ? (validateURL(imageUrl) ? imageUrl : undefined) : undefined;
+
+      // Create scheduled post with sanitized data
       const scheduledPost = {
         id: `scheduled-${Date.now()}`,
         platform,
-        content: content.trim(),
-        scheduledTime,
-        imageUrl: imageUrl || undefined,
+        content: sanitizedContent,
+        scheduledTime: scheduledTime || getDefaultScheduledTime(),
+        imageUrl: sanitizedImageUrl,
         createdAt: new Date().toISOString(),
       };
 
       // Store in localStorage for demo purposes
+      // In production, send to a backend API
       const existing = JSON.parse(localStorage.getItem("scheduledPosts") || "[]");
       existing.push(scheduledPost);
       localStorage.setItem("scheduledPosts", JSON.stringify(existing));

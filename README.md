@@ -33,13 +33,13 @@ A comprehensive, real-time dashboard for managing multiple social media accounts
 - **Activity Tracking**: Recent activity feed showing likes, comments, and shares
 - **Top Posts Analysis**: Automatically identifies and displays top performing posts
 - **Quick Stats**: At-a-glance metrics for total followers, engagement, reach, and growth
-- **Security**: Enterprise-grade security features
-  - Rate limiting (100 requests per 15 minutes per IP)
-  - Input validation with Zod schemas
-  - XSS protection with input sanitization
-  - Security headers (CSP, X-Frame-Options, etc.)
-  - CORS protection with configurable origins
-  - Middleware for request validation
+- **Client-Side Security**: 
+  - Input validation and sanitization
+  - XSS protection
+  - URL validation
+  - Client-side rate limiting
+  - Content length validation
+  - Scheduled time validation
 
 ### 🎨 Design Features
 
@@ -55,7 +55,7 @@ A comprehensive, real-time dashboard for managing multiple social media accounts
 - **TypeScript** - Full type safety and enhanced developer experience
 - **Chart.js 4** - Advanced data visualization with React Chart.js 2
 - **Tailwind CSS** - Utility-first CSS framework for rapid UI development
-- **Zod** - Schema validation for type-safe API requests
+- **Zod** - Schema validation (available for future use)
 - **date-fns** - Modern date utility library for formatting and manipulation
 - **clsx & tailwind-merge** - Conditional class name utilities
 
@@ -88,7 +88,7 @@ npm run dev
 
 ## 📦 Deploy to GitHub Pages
 
-This project is configured for GitHub Pages deployment. Follow the [GitHub Pages Setup Guide](GITHUB_PAGES_SETUP.md) for detailed instructions.
+This project is configured for GitHub Pages deployment (static export).
 
 ### Quick Deploy Steps:
 
@@ -122,10 +122,6 @@ git push -u origin main
 
 ```
 ├── app/
-│   ├── api/              # API routes (converted to client-side for GitHub Pages)
-│   │   ├── stats/        # Statistics endpoint
-│   │   ├── posts/        # Posts endpoint
-│   │   └── schedule/     # Scheduling endpoint
 │   ├── layout.tsx        # Root layout
 │   ├── page.tsx          # Home page
 │   └── globals.css       # Global styles
@@ -144,13 +140,12 @@ git push -u origin main
 ├── lib/                  # Utilities
 │   ├── constants.ts      # Shared platform constants
 │   ├── socialMediaAPI.ts # API service with mock data generators
-│   ├── security.ts       # Security utilities (rate limiting, validation)
+│   ├── clientSecurity.ts # Client-side security utilities
 │   └── utils.ts          # Helper functions (class name utilities)
 ├── .github/
 │   └── workflows/
 │       ├── ci.yml        # Continuous Integration
 │       └── deploy-pages.yml # GitHub Pages deployment
-├── middleware.ts         # Next.js middleware for security headers
 └── tailwind.config.ts    # Tailwind CSS configuration
 ```
 
@@ -161,7 +156,7 @@ git push -u origin main
 If your repository name is different from `social-media-dashboard`, update `next.config.mjs`:
 
 ```javascript
-const repoName = 'your-repo-name'; // Change this
+const REPO_NAME = 'your-repo-name'; // Change this line (line 4)
 ```
 
 ## 📡 Real-time Data
@@ -209,14 +204,17 @@ The dashboard is fully responsive and adapts to different screen sizes:
 Since GitHub Pages is static hosting:
 - ✅ All frontend features work perfectly
 - ✅ Mock data works (fetched client-side)
-- ❌ API routes converted to client-side (no server)
-- ❌ Scheduled posts stored in localStorage (demo only)
+- ✅ Client-side security validation and sanitization
+- ❌ No server-side API routes (all data fetching is client-side)
+- ❌ Scheduled posts stored in localStorage (demo only - not persistent across devices)
 
-For production with server-side features, consider:
-- Vercel
-- Netlify
-- Railway
-- Or a separate backend API
+### For Production with Server-Side Features
+
+If you need server-side functionality, consider:
+- **Vercel** - Best for Next.js (supports API routes)
+- **Netlify** - Good alternative with serverless functions
+- **Railway** - Full-stack deployment
+- **Separate Backend API** - Use GitHub Pages for frontend + separate API service
 
 ## 📝 License
 

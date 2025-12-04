@@ -35,8 +35,9 @@ jobs:
 
     - name: Check build artifacts
       run: |
-        if [ ! -d ".next" ]; then
-          echo "Build failed - .next directory not found"
+        if [ ! -d "out" ]; then
+          echo "Build failed - out directory not found (static export)"
           exit 1
         fi
+        echo "Build successful - static export generated in out/ directory"
 

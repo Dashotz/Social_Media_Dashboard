@@ -12,6 +12,7 @@ import ActivityFeed from "./ActivityFeed";
 import PerformanceMetrics from "./PerformanceMetrics";
 import Insights from "./Insights";
 import { SocialMediaStats, Post } from "@/lib/socialMediaAPI";
+import { clientRateLimit } from "@/lib/clientSecurity";
 
 export default function Dashboard() {
   const [stats, setStats] = useState<SocialMediaStats[]>([]);
@@ -24,6 +25,13 @@ export default function Dashboard() {
     try {
       setLoading(true);
       setError(null);
+
+      // Client-side rate limiting
+      if (!clientRateLimit('dashboard_fetch', 10, 30000)) {
+        setError("Too many requests. Please wait a moment.");
+        setLoading(false);
+        return;
+      }
 
       // For GitHub Pages (static hosting), fetch data directly from the API service
       const { fetchAllStats, fetchRecentPosts } = await import("@/lib/socialMediaAPI");
