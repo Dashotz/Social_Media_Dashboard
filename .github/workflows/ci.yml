@@ -32,12 +32,16 @@ jobs:
 
     - name: Build project
       run: npm run build
+      env:
+        NODE_ENV: production
 
     - name: Check build artifacts
       run: |
         if [ ! -d "out" ]; then
-          echo "Build failed - out directory not found (static export)"
+          echo "❌ Build failed - out directory not found (static export)"
           exit 1
         fi
-        echo "Build successful - static export generated in out/ directory"
+        echo "✅ Build successful - static export generated in out/ directory"
+        echo "📦 Build output size:"
+        du -sh out/
 
