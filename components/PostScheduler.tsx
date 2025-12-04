@@ -24,26 +24,34 @@ export default function PostScheduler({ onSchedule }: PostSchedulerProps) {
     setMessage(null);
 
     try {
-      const response = await fetch("/api/schedule", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          platform,
-          content,
-          scheduledTime,
-          imageUrl: imageUrl || undefined,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to schedule post");
+      // For GitHub Pages (static hosting), validate and store locally
+      if (!content.trim()) {
+        throw new Error("Content is required");
+      }
+      if (!scheduledTime) {
+        throw new Error("Scheduled time is required");
+      }
+      if (new Date(scheduledTime) < new Date()) {
+        throw new Error("Scheduled time must be in the future");
       }
 
-      setMessage({ type: "success", text: "Post scheduled successfully!" });
+      // In a static site, we can't save to a server, so we'll simulate success
+      // In production, you'd want to use a backend service or database
+      const scheduledPost = {
+        id: `scheduled-${Date.now()}`,
+        platform,
+        content: content.trim(),
+        scheduledTime,
+        imageUrl: imageUrl || undefined,
+        createdAt: new Date().toISOString(),
+      };
+
+      // Store in localStorage for demo purposes
+      const existing = JSON.parse(localStorage.getItem("scheduledPosts") || "[]");
+      existing.push(scheduledPost);
+      localStorage.setItem("scheduledPosts", JSON.stringify(existing));
+
+      setMessage({ type: "success", text: "Post scheduled successfully! (Stored locally)" });
       setContent("");
       setScheduledTime("");
       setImageUrl("");

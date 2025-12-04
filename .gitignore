@@ -12,6 +12,9 @@
 /.next/
 /out/
 
+# Keep out directory for GitHub Pages (but ignore in git)
+# /out is needed for deployment but shouldn't be committed
+
 # production
 /build
 
@@ -30,6 +33,9 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# github
+.github/workflows/*.log
 
 # typescript
 *.tsbuildinfo

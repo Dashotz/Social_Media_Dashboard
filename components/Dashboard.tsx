@@ -25,20 +25,16 @@ export default function Dashboard() {
       setLoading(true);
       setError(null);
 
-      const [statsRes, postsRes] = await Promise.all([
-        fetch("/api/stats"),
-        fetch("/api/posts"),
+      // For GitHub Pages (static hosting), fetch data directly from the API service
+      const { fetchAllStats, fetchRecentPosts } = await import("@/lib/socialMediaAPI");
+      
+      const [statsData, postsData] = await Promise.all([
+        fetchAllStats(),
+        fetchRecentPosts(),
       ]);
 
-      if (!statsRes.ok || !postsRes.ok) {
-        throw new Error("Failed to fetch data");
-      }
-
-      const statsData = await statsRes.json();
-      const postsData = await postsRes.json();
-
-      setStats(statsData.data);
-      setPosts(postsData.data);
+      setStats(statsData);
+      setPosts(postsData);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {

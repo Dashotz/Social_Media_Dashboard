@@ -2,6 +2,8 @@
 
 A comprehensive, real-time dashboard for managing multiple social media accounts with advanced analytics, post scheduling, and performance insights. Built with Next.js 14, TypeScript, and Chart.js, featuring a modern black and silver theme with responsive design.
 
+🌐 **Live Demo**: [View on GitHub Pages](https://yourusername.github.io/social-media-dashboard/)
+
 ## ✨ Features
 
 ### 📊 Dashboard Sections
@@ -57,7 +59,7 @@ A comprehensive, real-time dashboard for managing multiple social media accounts
 - **date-fns** - Modern date utility library for formatting and manipulation
 - **clsx & tailwind-merge** - Conditional class name utilities
 
-## Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
 
@@ -66,37 +68,61 @@ A comprehensive, real-time dashboard for managing multiple social media accounts
 
 ### Installation
 
-1. Install dependencies:
+1. **Clone the repository**:
+```bash
+git clone https://github.com/yourusername/social-media-dashboard.git
+cd social-media-dashboard
+```
+
+2. **Install dependencies**:
 ```bash
 npm install
 ```
 
-2. Create a `.env.local` file in the root directory:
-```env
-# Optional: API Keys for social media platforms
-FACEBOOK_APP_ID=your_facebook_app_id
-FACEBOOK_APP_SECRET=your_facebook_app_secret
-INSTAGRAM_ACCESS_TOKEN=your_instagram_token
-TWITTER_API_KEY=your_twitter_api_key
-TWITTER_API_SECRET=your_twitter_api_secret
-
-# Security
-API_KEYS=your_api_key_1,your_api_key_2
-ALLOWED_ORIGINS=http://localhost:3000,https://yourdomain.com
-```
-
-3. Run the development server:
+3. **Run the development server**:
 ```bash
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+4. **Open** [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Project Structure
+## 📦 Deploy to GitHub Pages
+
+This project is configured for GitHub Pages deployment. Follow the [GitHub Pages Setup Guide](GITHUB_PAGES_SETUP.md) for detailed instructions.
+
+### Quick Deploy Steps:
+
+1. **Push to GitHub**:
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/YOUR_USERNAME/social-media-dashboard.git
+git push -u origin main
+```
+
+2. **Enable GitHub Pages**:
+   - Go to repository Settings → Pages
+   - Source: Deploy from a branch → main → / (root)
+   - Save
+
+3. **Enable GitHub Actions**:
+   - Settings → Actions → General
+   - Workflow permissions: Read and write
+   - Save
+
+4. **Your site will be live at**:
+   ```
+   https://YOUR_USERNAME.github.io/social-media-dashboard/
+   ```
+
+**Note**: Update `basePath` in `next.config.mjs` if your repository name is different.
+
+## 📁 Project Structure
 
 ```
 ├── app/
-│   ├── api/              # API routes
+│   ├── api/              # API routes (converted to client-side for GitHub Pages)
 │   │   ├── stats/        # Statistics endpoint
 │   │   ├── posts/        # Posts endpoint
 │   │   └── schedule/     # Scheduling endpoint
@@ -116,42 +142,31 @@ npm run dev
 │   ├── PostScheduler.tsx    # Advanced post scheduler with preview
 │   └── Insights.tsx         # Key insights and recommendations
 ├── lib/                  # Utilities
+│   ├── constants.ts      # Shared platform constants
 │   ├── socialMediaAPI.ts # API service with mock data generators
 │   ├── security.ts       # Security utilities (rate limiting, validation)
 │   └── utils.ts          # Helper functions (class name utilities)
+├── .github/
+│   └── workflows/
+│       ├── ci.yml        # Continuous Integration
+│       └── deploy-pages.yml # GitHub Pages deployment
 ├── middleware.ts         # Next.js middleware for security headers
 └── tailwind.config.ts    # Tailwind CSS configuration
-└── package.json
 ```
 
-## API Endpoints
+## 🔧 Configuration
 
-### GET /api/stats
-Returns statistics for all connected social media platforms.
+### Update Repository Name
 
-### GET /api/posts
-Returns recent posts. Optional query parameter: `?platform=facebook|instagram|twitter`
+If your repository name is different from `social-media-dashboard`, update `next.config.mjs`:
 
-### POST /api/schedule
-Schedule a new post. Requires:
-- `platform`: "facebook" | "instagram" | "twitter"
-- `content`: string (platform-specific limits: Facebook 5000, Instagram 2200, Twitter 280)
-- `scheduledTime`: ISO datetime string
-- `imageUrl`: optional URL string
-
-Returns the scheduled post object with ID and creation timestamp.
-
-## Security Features
-
-- **Rate Limiting**: 100 requests per 15 minutes per IP
-- **Input Validation**: Zod schema validation for all inputs
-- **XSS Protection**: Input sanitization
-- **Security Headers**: CSP, X-Frame-Options, etc.
-- **CORS**: Configurable allowed origins
+```javascript
+const repoName = 'your-repo-name'; // Change this
+```
 
 ## 📡 Real-time Data
 
-The dashboard automatically refreshes data every 30 seconds to provide up-to-date statistics. Currently uses mock data generators for demonstration purposes.
+The dashboard automatically refreshes data every 30 seconds. Currently uses mock data generators for demonstration purposes.
 
 ### Connecting to Real APIs
 
@@ -162,43 +177,9 @@ To connect to actual social media APIs:
    - Instagram: Obtain Access Token from Instagram Basic Display API
    - Twitter: Get API Key and Secret from [Twitter Developer Portal](https://developer.twitter.com/)
 
-2. **Update API Service**: Modify `lib/socialMediaAPI.ts` to replace mock functions with actual API calls:
-   ```typescript
-   // Replace fetchFacebookStats() with actual Facebook Graph API calls
-   // Replace fetchInstagramStats() with Instagram API calls
-   // Replace fetchTwitterStats() with Twitter API v2 calls
-   ```
+2. **Update API Service**: Modify `lib/socialMediaAPI.ts` to replace mock functions with actual API calls
 
-3. **Add Credentials**: Add your API keys to `.env.local`:
-   ```env
-   FACEBOOK_APP_ID=your_app_id
-   FACEBOOK_APP_SECRET=your_app_secret
-   INSTAGRAM_ACCESS_TOKEN=your_token
-   TWITTER_API_KEY=your_key
-   TWITTER_API_SECRET=your_secret
-   TWITTER_BEARER_TOKEN=your_bearer_token
-   ```
-
-4. **Update Rate Limits**: Adjust rate limiting in `lib/security.ts` if needed for production use.
-
-## 🚀 Building for Production
-
-```bash
-# Build the application
-npm run build
-
-# Start the production server
-npm start
-```
-
-The production build will be optimized and ready for deployment on platforms like Vercel, Netlify, or any Node.js hosting service.
-
-## 📱 Responsive Design
-
-The dashboard is fully responsive and adapts to different screen sizes:
-- **Desktop**: Full sidebar navigation with all features
-- **Tablet**: Responsive grid layouts (2 columns)
-- **Mobile**: Dropdown menu for navigation, single column layouts
+3. **Note**: For GitHub Pages (static hosting), you'll need to use a separate backend service or API proxy for real API calls.
 
 ## 🎨 Customization
 
@@ -211,12 +192,36 @@ The dashboard uses a black and silver theme. To customize:
 
 ### Adding New Platforms
 
-1. Add platform to `SocialMediaStats` interface in `lib/socialMediaAPI.ts`
-2. Create fetch function for the new platform
-3. Add platform icon and colors to component files
+1. Add platform to `lib/constants.ts`
+2. Add platform to `SocialMediaStats` interface in `lib/socialMediaAPI.ts`
+3. Create fetch function for the new platform
 4. Update character limits in `PostScheduler.tsx`
+
+## 📱 Responsive Design
+
+The dashboard is fully responsive and adapts to different screen sizes:
+- **Desktop**: Full sidebar navigation with all features
+- **Tablet**: Responsive grid layouts (2 columns)
+- **Mobile**: Dropdown menu for navigation, single column layouts
+
+## ⚠️ GitHub Pages Limitations
+
+Since GitHub Pages is static hosting:
+- ✅ All frontend features work perfectly
+- ✅ Mock data works (fetched client-side)
+- ❌ API routes converted to client-side (no server)
+- ❌ Scheduled posts stored in localStorage (demo only)
+
+For production with server-side features, consider:
+- Vercel
+- Netlify
+- Railway
+- Or a separate backend API
 
 ## 📝 License
 
 MIT License - feel free to use this project for personal or commercial purposes.
 
+## 🙏 Acknowledgments
+
+Built with Next.js, TypeScript, Chart.js, and Tailwind CSS.
